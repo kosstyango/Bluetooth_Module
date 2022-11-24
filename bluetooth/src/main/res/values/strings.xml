@@ -1,0 +1,5 @@
+<resources>
+    <string name="paired_devices">Сопряжённые Устройства</string>
+    <string name="searching_devices">Поиск Устройств...</string>
+    <string name="empty">Пусто :(</string>
+</resources>
