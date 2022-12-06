@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat.getColor
+import androidx.core.content.ContextCompat
 import com.example.bluetooth.databinding.FragmentListBinding
 
 class DeviceListFragment : Fragment() {
@@ -36,6 +38,6 @@ class DeviceListFragment : Fragment() {
     }
 
     private fun blueToothState(){
-        if (bAdapter?.isEnabled == true) {changeButtonColor(binding.imageBTH, Color.GREEN)}
-    }
+        if (bAdapter?.isEnabled == true) {changeButtonColor(binding.imageBTH, ContextCompat.getColor(activity as Context, R.color.DarkGreen))}
+        }
 }
