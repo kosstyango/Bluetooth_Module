@@ -23,7 +23,7 @@ class ItemAdapter(private val listener: Listener) : ListAdapter<ListItem, ItemAd
             }
             itemView.setOnClickListener{ //Слушаем нажатие на строчку с устройством (необязательно)
                 device?.let { it1 -> listener.onClick(it1) }//это тот же обработчик нажатия на строчку
-                adapter.selectCheckBox(b.checkBox)
+                adapter.selectCheckBox(b.checkBox)//это тот же обработчик нажатия на строчку
             }
         }
         fun bind(item: ListItem) = with(b) {
