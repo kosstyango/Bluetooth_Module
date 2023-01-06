@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.example.bluetooth.databinding.FragmentListBinding
 import com.google.android.material.snackbar.Snackbar
 
 class DeviceListFragment : Fragment(), ItemAdapter.Listener {
+    private var preferences : SharedPreferences? = null
     private lateinit var itemAdapter : ItemAdapter
     private var bAdapter: BluetoothAdapter? = null
     private lateinit var binding: FragmentListBinding
@@ -33,6 +35,7 @@ class DeviceListFragment : Fragment(), ItemAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preferences = activity?.getSharedPreferences(BluetoothConstants.PREFERENCE, Context.MODE_PRIVATE)
         binding.imageBTH.setOnClickListener{ //Вешаем обработчик на кнопку "Bluetooth"
          btLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))} //Запрашиваем разрешение у Системы на включение Bluetooth
         initRcViews()
@@ -52,7 +55,9 @@ class DeviceListFragment : Fragment(), ItemAdapter.Listener {
             val list = ArrayList<ListItem>()
             val deviceList = bAdapter?.bondedDevices as Set<BluetoothDevice>
             deviceList.forEach(){
-            list.add(ListItem(it.name, it.address, false))
+            list.add(ListItem(it.name, it.address, //наполняем список спаренными устройствами
+                        preferences?.getString(BluetoothConstants.MAC, "") == it.address))
+            //всем устройствам ставим false, кроме того, которое сохранено ранее: ему ставим true
                 }
             binding.tvEmptyPired.visibility = if(list.isEmpty()) View.VISIBLE //Проверяем наполненность списка
                 else View.GONE //Гасим надпись "Пусто", если список НЕ пустой
@@ -89,8 +94,13 @@ class DeviceListFragment : Fragment(), ItemAdapter.Listener {
             }
         }
     }
+    private fun saveMac(mac: String){
+        val editor = preferences?.edit()
+        editor?.putString(BluetoothConstants.MAC, mac)
+        editor?.apply()
+    }
 
     override fun onClick(device: ListItem) { //здесь будем сохранять выбранное устройство
-
+        saveMac(device.mac)
     }
 }
