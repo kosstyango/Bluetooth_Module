@@ -52,10 +52,10 @@ class ItemAdapter(private val listener: Listener) : ListAdapter<ListItem, ItemAd
         holder.bind(getItem(position))
     }
 
-    fun selectCheckBox(checkBox: CheckBox){
-        oldCheckBox?.isChecked = false
-        oldCheckBox = checkBox
-        oldCheckBox?.isChecked = true
+    fun selectCheckBox(checkBox: CheckBox){ //обработчик нажатия кнопок выбора устройств из списка
+        oldCheckBox?.isChecked = false //убираем галочку со "старой" кнопки
+        oldCheckBox = checkBox //обновляем "старую" кнопку
+        oldCheckBox?.isChecked = true//ставим галочку новой "старой" кнопке
     }
 
     interface Listener{
